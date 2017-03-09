@@ -17,29 +17,30 @@ class LogisticModel(object):
 
         N, D = X.shape
         K = len(set(Y))
-        T = y2indicator(Y)
+        T = y2indicator(Y) # targets indicator matrix Nx7
+        # initialize my weights and biases
         self.W = np.random.randn(D, K) / np.sqrt(D + K)
         self.b = np.zeros(K)
 
         costs = []
         best_validation_error = 1
-        for i in xrange(epochs):
+        for i in range(epochs):
             # forward propagation and cost calculation
             pY = self.forward(X)
 
             # gradient descent step
             self.W -= learning_rate*(X.T.dot(pY - T) + reg*self.W)
             self.b -= learning_rate*((pY - T).sum(axis=0) + reg*self.b)
-
+            # notice how we dont sum the total of py-t anymore, because we want to end up with a vector of size k
             if i % 10 == 0:
                 pYvalid = self.forward(Xvalid)
                 c = cost(Tvalid, pYvalid)
                 costs.append(c)
                 e = error_rate(Yvalid, np.argmax(pYvalid, axis=1))
-                print "i:", i, "cost:", c, "error:", e
+                print("i:", i, "cost:", c, "error:", e)
                 if e < best_validation_error:
                     best_validation_error = e
-        print "best_validation_error:", best_validation_error
+        print("best_validation_error:", best_validation_error)
 
         if show_fig:
             plt.plot(costs)
@@ -63,7 +64,7 @@ def main():
     
     model = LogisticModel()
     model.fit(X, Y, show_fig=True)
-    print model.score(X, Y)
+    print(model.score(X, Y))
     # scores = cross_val_score(model, X, Y, cv=5)
     # print "score mean:", np.mean(scores), "stdev:", np.std(scores)
 

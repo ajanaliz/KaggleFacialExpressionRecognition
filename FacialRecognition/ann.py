@@ -26,7 +26,7 @@ class ANN(object):
 
         costs = []
         best_validation_error = 1
-        for i in xrange(epochs):
+        for i in range(epochs):
             # forward propagation and cost calculation
             pY, Z = self.forward(X)
 
@@ -44,10 +44,10 @@ class ANN(object):
                 c = cost2(Yvalid, pYvalid)
                 costs.append(c)
                 e = error_rate(Yvalid, np.argmax(pYvalid, axis=1))
-                print "i:", i, "cost:", c, "error:", e
+                print("i:", i, "cost:", c, "error:", e)
                 if e < best_validation_error:
                     best_validation_error = e
-        print "best_validation_error:", best_validation_error
+        print("best_validation_error:", best_validation_error)
 
         if show_fig:
             plt.plot(costs)
@@ -72,7 +72,7 @@ def main():
 
     model = ANN(200)
     model.fit(X, Y, reg=0, show_fig=True)
-    print model.score(X, Y)
+    print(model.score(X, Y))
     # scores = cross_val_score(model, X, Y, cv=5)
     # print "score mean:", np.mean(scores), "stdev:", np.std(scores)
 
